@@ -1,36 +1,37 @@
 import os
-import smtplib
-from email.message import EmailMessage
+import requests
 
+# Configuración del remitente y destinatario
 REMITENTE = "diegoburneo@gmail.com"
 DESTINATARIO = "diegoburneoh@gmail.com"
 
-# Lee la contraseña de aplicación desde los secretos de GitHub
-PASSWORD_APP = os.environ.get("MAIL_PASS")
+# Lee la API Key de Brevo desde los secretos de GitHub
+API_KEY = os.environ.get("MAIL_PASS")
 
-# Impresión corregida en Python (usando f-string)
-print(f"Valor enmascarado de la contraseña: {PASSWORD_APP}")
+url = "https://api.brevo.com/v3/smtp/email"
 
-# Comprobación útil de longitud para saber si llegó vacía o no
-if PASSWORD_APP:
-    print(f" Longitud recibida: {len(PASSWORD_APP)} caracteres")
-else:
-    print("❌ LA VARIABLE MAIL_PASS ESTÁ VACÍA (None)")
+headers = {
+    "accept": "application/json",
+    "api-key": API_KEY,
+    "content-type": "application/json"
+}
 
-mensaje = EmailMessage()
-mensaje["From"] = REMITENTE
-mensaje["To"] = DESTINATARIO
-mensaje["Subject"] = "Correo automatizado desde GitHub Actions"
-mensaje.set_content("¡Hola! Este correo se envió automáticamente desde la nube de GitHub.")
+payload = {
+    "sender": {"name": "Automatizacion GitHub", "email": REMITENTE},
+    "to": [{"email": DESTINATARIO}],
+    "subject": "Correo automatizado desde GitHub Actions con Brevo",
+    "textContent": "¡Hola! Este correo se envió desde la nube de GitHub usando la API de Brevo y llegó sin problemas."
+}
 
 try:
-    print("Conectando al servidor con TLS (Puerto 587)...")
-    with smtplib.SMTP("smtp.gmail.com", 587) as servidor:
-        servidor.starttls()
-        servidor.login(REMITENTE, PASSWORD_APP)
-        servidor.send_message(mensaje)
+    print("Enviando correo a través de la API de Brevo...")
+    response = requests.post(url, json=payload, headers=headers)
 
-    print("¡Correo enviado con éxito!")
+    if response.status_code == 201:
+        print("¡Correo enviado con éxito!")
+    else:
+        print(f"Error al enviar el correo. Código: {response.status_code}")
+        print(response.text)
 
 except Exception as e:
-    print(f"Error al enviar el correo: {e}")
+    print(f"Ocurrió un error inesperado: {e}")

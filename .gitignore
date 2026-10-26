@@ -3,3 +3,9 @@ __pycache__/
 .idea/
 .vscode/
 venv/
+
+
+MAIL_PASS
+secrets.GMAIL_PASSWORD
+
+xsmtpsib-ad7c2800b2b1b2818e73d7300e46bf77f63448cb36f0ec286ced790f8f71f96a-ypqOXj0ZESLmnDB7
