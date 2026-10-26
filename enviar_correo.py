@@ -7,7 +7,16 @@ DESTINATARIO = "diegoburneoh@gmail.com"
 
 # Lee la contraseña de aplicación desde los secretos de GitHub
 PASSWORD_APP = os.environ.get("MAIL_PASS")
-print("contraseña...:"PASSWORD_APP)
+
+# Impresión corregida en Python (usando f-string)
+print(f"Valor enmascarado de la contraseña: {PASSWORD_APP}")
+
+# Comprobación útil de longitud para saber si llegó vacía o no
+if PASSWORD_APP:
+    print(f" Longitud recibida: {len(PASSWORD_APP)} caracteres")
+else:
+    print("❌ LA VARIABLE MAIL_PASS ESTÁ VACÍA (None)")
+
 mensaje = EmailMessage()
 mensaje["From"] = REMITENTE
 mensaje["To"] = DESTINATARIO
@@ -16,7 +25,6 @@ mensaje.set_content("¡Hola! Este correo se envió automáticamente desde la nub
 
 try:
     print("Conectando al servidor con TLS (Puerto 587)...")
-    # Usamos el puerto 587 con starttls
     with smtplib.SMTP("smtp.gmail.com", 587) as servidor:
         servidor.starttls()
         servidor.login(REMITENTE, PASSWORD_APP)
