@@ -7,7 +7,7 @@ DESTINATARIO = "diegoburneoh@gmail.com"
 
 # Lee la contraseña de aplicación desde los secretos de GitHub
 PASSWORD_APP = os.environ.get("MAIL_PASS")
-
+print("contraseña...:"PASSWORD_APP)
 mensaje = EmailMessage()
 mensaje["From"] = REMITENTE
 mensaje["To"] = DESTINATARIO
