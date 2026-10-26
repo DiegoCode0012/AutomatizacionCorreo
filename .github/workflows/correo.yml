@@ -2,9 +2,8 @@ name: Enviar Correo Diario
 
 on:
   schedule:
-    # Se ejecuta todos los días a las 8:00 AM UTC
-    - cron: '0 8 * * *' 
-  workflow_dispatch: # Permite probar el script de forma manual desde la web de GitHub
+    - cron: '0 8 * * *'
+  workflow_dispatch:
 
 jobs:
   enviar_correo:
@@ -17,6 +16,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
+      - name: Instalar dependencias
+        run: pip install requests
 
       - name: Ejecutar script de envío
         env:
